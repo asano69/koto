@@ -1,4 +1,14 @@
-BINARY := kithara
+BINARY := $(notdir $(CURDIR))
+APP := $(notdir $(CURDIR))
+# Ports used by the dev servers (frontend, backend, and PocketBase-style API)
+PORTS := 3000 3001
+
+
+init:
+	fastmod --hidden myapp $(APP) --glob '!Makefile'
+	find . -depth \( -type f -o -type d \) -name '*myapp*' | while read -r f; do \
+		mv -- "$$f" "$$(dirname "$$f")/$$(basename "$$f" | sed 's/myapp/$(APP))/g')"; \
+	done
 
 .PHONY: frontend-deps
 frontend-deps:
@@ -14,13 +24,18 @@ build: build-frontend
 
 .PHONY: kill-ports
 kill-ports:
-	@lsof -ti:3000 | xargs -r kill -9 2>/dev/null || true
-	@lsof -ti:3001 | xargs -r kill -9 2>/dev/null || true
+	@for port in $(PORTS); do \
+		pid=$$(lsof -ti tcp:$$port); \
+		if [ -n "$$pid" ]; then \
+			echo "Killing process on port $$port (pid $$pid)"; \
+			kill -9 $$pid; \
+		fi \
+	done
 
 
 .PHONY: server
-server: kill-ports build
-	#./kithara migrate up --dir=pb_data
+server: kill-ports
+	#./mineralbox migrate up --dir=pb_data
 	./$(BINARY) superuser upsert admin@mail.internal password --dir=pb_data
 	./$(BINARY) serve
 
@@ -30,12 +45,12 @@ server: kill-ports build
 
 # port: 3001
 .PHONY: dev-front
-dev-front: clean kill-ports
-	npx concurrently -n "frontend,backend" -c "blue,green" "cd frontend && pnpm dev" "air"
+dev-front: clean
+	npx concurrently -n "frontend,backend" -c "blue,green" "cd frontend && pnpm dev" "./$(BINARY) serve"
 
 # port: 3000
 .PHONY: dev-back
-dev-back: clean kill-ports
+dev-back: clean
 	npx concurrently -n "frontend,backend" -c "blue,green" "cd frontend && pnpm watch" "air"
 
 
@@ -43,9 +58,13 @@ dev-back: clean kill-ports
 test:
 	go test ./...
 
+format:
+	cd frontend && pnpm exec prettier --write "src/**/*.{js,jsx,css}"
 
 migrate-collections:
-	go run ./cmd/kithara migrate collections
+	rm -f migrations/*.go
+	yes | go run ./cmd/mineralbox migrate collections # 開発初期限定
+
 
 
 
