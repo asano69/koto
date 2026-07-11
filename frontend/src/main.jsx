@@ -8,6 +8,7 @@ import "./style.css";
 import Home from "./routes/Home";
 import Settings from "./routes/Settings";
 import Login from "./routes/Login";
+import RRuleTest from "./routes/RRuleTest";
 
 import pb from "./lib/pb";
 
@@ -32,6 +33,7 @@ render(
       <Router>
         <Route path="/" component={Home} />
         <Route path="/settings" component={Settings} />
+        <Route path="/rrule-test" component={RRuleTest} />
       </Router>
     </AuthGate>
   ),

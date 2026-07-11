@@ -18,6 +18,7 @@ export default function NavBar(props) {
       
         <A href="/stats" class="btn">Stats</A>
         <A href="/settings" class="btn">Settings</A>
+        <A href="/rrule-test" class="btn">RRule</A>
         <button type="button" class="btn" onClick={handleLogout}>Log out</button>
       </nav>
     </div>
