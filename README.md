@@ -47,11 +47,17 @@ PocketBaseのcron設定でルールを定期的に評価し、条件を満たし
 - react-rrule-builder-ts をSolid.JS用に移植する。
 
 ## rrule
+
+builder
 - “Fafruch/react-rrule-generator: [NO LONGER MAINTAINED] Recurrence rules generator form built with React”. GitHub, [https://github.com/fafruch/react-rrule-generator](https://github.com/fafruch/react-rrule-generator), (Accessed 2026-07-12)
 - “React RRule Generator”. fafruch.github.io, [https://fafruch.github.io/react-rrule-generator/](https://fafruch.github.io/react-rrule-generator/), (Accessed 2026-07-12)
 - “dcantatore/react-rrule-builder-ts: rrule component for react with mui”. GitHub, [https://github.com/dcantatore/react-rrule-builder-ts](https://github.com/dcantatore/react-rrule-builder-ts), (Accessed 2026-07-12)
 - “RRuleBuilder - Primary ⋅ Storybook”. dcantatore.github.io, [https://dcantatore.github.io/react-rrule-builder-ts/?path=/story/rrulebuilder--primary](https://dcantatore.github.io/react-rrule-builder-ts/?path=/story/rrulebuilder--primary), (Accessed 2026-07-12)
 
+tester
+- “RRULE Tester — iCalendar Recurrence Rule Expander”. AtlasClock Developer Tools, [https://www.atlasclock.com/rrule/](https://www.atlasclock.com/rrule/), (Accessed 2026-07-12)
+- “RRULEビルダー | 無料オンライン繰り返しルール生成ツール | Toolsbase”. Toolsbase, [https://toolsbase.dev/ja/time/rrule-builder](https://toolsbase.dev/ja/time/rrule-builder), (Accessed 2026-07-12)
+- “Recurring Date Generator”. YouCalc, [https://youcalc.com/en/date-time/recurring-date-generator/](https://youcalc.com/en/date-time/recurring-date-generator/), (Accessed 2026-07-12)
 ### Tech Stack
 - Go
 - [SolidJS](https://github.com/solidjs/solid)
