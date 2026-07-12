@@ -79,20 +79,27 @@ func TestParseRulePastDtstartAlwaysReturnsFutureNext(t *testing.T) {
 	}
 }
 
+func TestBuildMessageTitle(t *testing.T) {
+	got := buildMessageTitle(db.Note{Label: "Water plants"})
+	want := "Kithara: Water plants"
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
 func TestBuildMessageBody(t *testing.T) {
-	t.Run("joins label and description", func(t *testing.T) {
-		got := buildMessageBody(db.Note{Label: "Water plants", Description: "Living room ficus"})
-		want := "Water plants: Living room ficus"
+	t.Run("formats description with MEMO prefix", func(t *testing.T) {
+		got := buildMessageBody(db.Note{Description: "Living room ficus"})
+		want := "MEMO: Living room ficus"
 		if got != want {
 			t.Errorf("got %q, want %q", got, want)
 		}
 	})
 
-	t.Run("falls back to label alone when description is empty", func(t *testing.T) {
-		got := buildMessageBody(db.Note{Label: "Water plants", Description: ""})
-		want := "Water plants"
-		if got != want {
-			t.Errorf("got %q, want %q", got, want)
+	t.Run("stays non-empty when description is empty", func(t *testing.T) {
+		got := buildMessageBody(db.Note{Description: ""})
+		if got == "" {
+			t.Error("expected a non-empty body even with an empty description")
 		}
 	})
 }

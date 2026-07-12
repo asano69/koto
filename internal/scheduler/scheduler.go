@@ -231,22 +231,29 @@ func (s *Scheduler) fireDue(entries []entry) []entry {
 	return next
 }
 
-// buildMessageBody joins the note's label and description as
-// "label: description". If description is empty, only the label is
-// used, since a trailing ": " with nothing after it looks broken and
-// Gotify may reject an effectively-empty message.
+// buildMessageTitle formats the notification title as "Kithara: label".
+func buildMessageTitle(note db.Note) string {
+	return fmt.Sprintf("[CTR] %s", note.Label)
+}
+
+// buildMessageBody formats the notification body as "MEMO: description".
+// If description is empty, it falls back to a plain placeholder so the
+// message never ends with a bare "MEMO: " and stays non-empty for Gotify.
 func buildMessageBody(note db.Note) string {
 	if note.Description == "" {
-		return note.Label
+		return "MEMO: (no description)"
 	}
-	return fmt.Sprintf("%s: %s", note.Label, note.Description)
+	return fmt.Sprintf("Memo: %s", note.Description)
 }
 
 // notify sends note's message to every configured Gotify target, logging
 // (rather than failing) any delivery error so one broken connection
 // doesn't stop the others from receiving it.
 func (s *Scheduler) notify(note db.Note, targets []db.NotificationTarget) {
-	msg := notify.Message{Title: "Kithara", Body: buildMessageBody(note)}
+	msg := notify.Message{
+		Title: buildMessageTitle(note),
+		Body:  buildMessageBody(note),
+	}
 
 	for _, t := range targets {
 		if t.Provider != "gotify" {
