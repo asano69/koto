@@ -4,6 +4,11 @@ import IntervalTextInput from "./Inputs/IntervalTextInput";
 
 export default function RepeatHourly(props) {
   return (
-    <IntervalTextInput value={props.value} onChange={props.onChange} unit="hour" pluralizeUnit />
+    <IntervalTextInput
+      value={props.value}
+      onChange={props.onChange}
+      unit="hour"
+      pluralizeUnit
+    />
   );
 }

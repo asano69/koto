@@ -9,7 +9,7 @@ import Home from "./routes/Home";
 import Settings from "./routes/Settings";
 import Login from "./routes/Login";
 import RRuleTest from "./routes/RRuleTest";
-
+import NewEntry from "./routes/NewEntry";
 import pb from "./lib/pb";
 
 // AuthGate blocks the whole app behind Login until a valid superuser
@@ -17,7 +17,9 @@ import pb from "./lib/pb";
 // both login and logout.
 function AuthGate(props) {
   const [authed, setAuthed] = createSignal(pb.authStore.isValid);
-  const unsubscribe = pb.authStore.onChange(() => setAuthed(pb.authStore.isValid));
+  const unsubscribe = pb.authStore.onChange(() =>
+    setAuthed(pb.authStore.isValid),
+  );
   onCleanup(unsubscribe);
 
   return (
@@ -34,9 +36,9 @@ render(
         <Route path="/" component={Home} />
         <Route path="/settings" component={Settings} />
         <Route path="/rrule-test" component={RRuleTest} />
+        <Route path="/new" component={NewEntry} />
       </Router>
     </AuthGate>
   ),
   document.getElementById("app"),
 );
-

@@ -17,9 +17,13 @@ export default function SelectMonth(props) {
         onChange={handleChange}
         class="rounded-md border border-[var(--color-border-soft)] bg-[var(--color-bg)] px-2 py-1 text-[var(--color-text)] disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <option value="" disabled>Select Month</option>
+        <option value="" disabled>
+          Select Month
+        </option>
         <For each={Object.values(Months)}>
-          {(monthNum) => <option value={monthNum}>{monthShortTextMapping[monthNum]}</option>}
+          {(monthNum) => (
+            <option value={monthNum}>{monthShortTextMapping[monthNum]}</option>
+          )}
         </For>
       </select>
     </label>

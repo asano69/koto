@@ -57,10 +57,21 @@ export default function RepeatYearly(props) {
   return (
     <div class="flex w-full flex-col items-start gap-4">
       {props.enableYearlyInterval && (
-        <IntervalTextInput value={props.value} onChange={props.onChange} unit="year" pluralizeUnit />
+        <IntervalTextInput
+          value={props.value}
+          onChange={props.onChange}
+          unit="year"
+          pluralizeUnit
+        />
       )}
 
-      <div class={useColumnLayout() ? "flex w-full flex-col items-start gap-2" : "flex w-full items-center gap-3"}>
+      <div
+        class={
+          useColumnLayout()
+            ? "flex w-full flex-col items-start gap-2"
+            : "flex w-full items-center gap-3"
+        }
+      >
         <label class="flex items-center gap-2">
           <input
             type="radio"
@@ -69,12 +80,24 @@ export default function RepeatYearly(props) {
             checked={props.radioValue() === YearlyBy.BYMONTH}
             onChange={() => handleRadioChange(YearlyBy.BYMONTH)}
           />
-          <span class={disabledOnBYMONTH() ? "text-[var(--color-border-soft)]" : ""}>On</span>
+          <span
+            class={disabledOnBYMONTH() ? "text-[var(--color-border-soft)]" : ""}
+          >
+            On
+          </span>
         </label>
-        <div class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}>
-          <SelectMonth value={props.value} onChange={handleOnChange} disabled={disabledOnBYMONTH()} />
+        <div
+          class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}
+        >
+          <SelectMonth
+            value={props.value}
+            onChange={handleOnChange}
+            disabled={disabledOnBYMONTH()}
+          />
         </div>
-        <div class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}>
+        <div
+          class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}
+        >
           <SelectDayCalendar
             value={props.value}
             onChange={handleOnChange}
@@ -84,7 +107,13 @@ export default function RepeatYearly(props) {
         </div>
       </div>
 
-      <div class={useColumnLayout() ? "flex w-full flex-col items-start gap-2" : "flex w-full items-center gap-3"}>
+      <div
+        class={
+          useColumnLayout()
+            ? "flex w-full flex-col items-start gap-2"
+            : "flex w-full items-center gap-3"
+        }
+      >
         <label class="flex items-center gap-2">
           <input
             type="radio"
@@ -93,18 +122,48 @@ export default function RepeatYearly(props) {
             checked={props.radioValue() === YearlyBy.BYSETPOS}
             onChange={() => handleRadioChange(YearlyBy.BYSETPOS)}
           />
-          <span class={disabledOnBYSETPOS() ? "text-[var(--color-border-soft)]" : ""}>On The</span>
+          <span
+            class={
+              disabledOnBYSETPOS() ? "text-[var(--color-border-soft)]" : ""
+            }
+          >
+            On The
+          </span>
         </label>
-        <div class={useColumnLayout() ? "w-full min-w-[150px]" : "min-w-[150px]"}>
-          <SelectPosition value={props.value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS()} />
+        <div
+          class={useColumnLayout() ? "w-full min-w-[150px]" : "min-w-[150px]"}
+        >
+          <SelectPosition
+            value={props.value}
+            onChange={handleOnTheChange}
+            disabled={disabledOnBYSETPOS()}
+          />
         </div>
-        <div class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}>
-          <SelectDayWeek value={props.value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS()} />
+        <div
+          class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}
+        >
+          <SelectDayWeek
+            value={props.value}
+            onChange={handleOnTheChange}
+            disabled={disabledOnBYSETPOS()}
+          />
         </div>
         <div class="flex items-center gap-2">
-          <span class={disabledOnBYSETPOS() ? "text-[var(--color-border-soft)]" : ""}>of</span>
-          <div class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}>
-            <SelectMonth value={props.value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS()} />
+          <span
+            class={
+              disabledOnBYSETPOS() ? "text-[var(--color-border-soft)]" : ""
+            }
+          >
+            of
+          </span>
+          <div
+            class={useColumnLayout() ? "w-full min-w-[120px]" : "min-w-[120px]"}
+          >
+            <SelectMonth
+              value={props.value}
+              onChange={handleOnTheChange}
+              disabled={disabledOnBYSETPOS()}
+            />
           </div>
         </div>
       </div>

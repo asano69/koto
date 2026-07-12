@@ -1,10 +1,16 @@
 // Ported from Repeat/RepeatWeekly.tsx. MUI Button row -> plain toggle buttons.
 
 import { For } from "solid-js";
-import { Weekday, weekdayFullTextMapping, weekdayShortTextMapping } from "../../../lib/rrule";
+import {
+  Weekday,
+  weekdayFullTextMapping,
+  weekdayShortTextMapping,
+} from "../../../lib/rrule";
 import IntervalTextInput from "./Inputs/IntervalTextInput";
 
-const weekdayKeys = Object.keys(Weekday).filter((d) => d !== Weekday.SA && d !== Weekday.SU);
+const weekdayKeys = Object.keys(Weekday).filter(
+  (d) => d !== Weekday.SA && d !== Weekday.SU,
+);
 
 function DayButton(props) {
   const selected = () => props.value.byDay.includes(props.day);
@@ -35,16 +41,39 @@ function DayButton(props) {
 export default function RepeatWeekly(props) {
   return (
     <div class="flex flex-col items-start gap-2">
-      <IntervalTextInput value={props.value} onChange={props.onChange} unit="week" pluralizeUnit />
-      <div role="group" aria-label="Select days of the week" class="flex w-full flex-wrap gap-1">
+      <IntervalTextInput
+        value={props.value}
+        onChange={props.onChange}
+        unit="week"
+        pluralizeUnit
+      />
+      <div
+        role="group"
+        aria-label="Select days of the week"
+        class="flex w-full flex-wrap gap-1"
+      >
         <div class="flex flex-[5] gap-1">
           <For each={weekdayKeys}>
-            {(day) => <DayButton day={day} value={props.value} onChange={props.onChange} />}
+            {(day) => (
+              <DayButton
+                day={day}
+                value={props.value}
+                onChange={props.onChange}
+              />
+            )}
           </For>
         </div>
         <div class="flex flex-[2] gap-1">
-          <DayButton day={Weekday.SA} value={props.value} onChange={props.onChange} />
-          <DayButton day={Weekday.SU} value={props.value} onChange={props.onChange} />
+          <DayButton
+            day={Weekday.SA}
+            value={props.value}
+            onChange={props.onChange}
+          />
+          <DayButton
+            day={Weekday.SU}
+            value={props.value}
+            onChange={props.onChange}
+          />
         </div>
       </div>
     </div>

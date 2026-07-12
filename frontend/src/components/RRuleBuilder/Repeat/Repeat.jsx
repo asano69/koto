@@ -35,19 +35,30 @@ export default function RepeatSelect(props) {
         class="w-full rounded-md border border-[var(--color-border-soft)] bg-[var(--color-bg)] px-2 py-1 text-[var(--color-text)]"
       >
         <For each={frequencyOptions}>
-          {(option) => <option value={option}>{frequencyTextMapping[option]}</option>}
+          {(option) => (
+            <option value={option}>{frequencyTextMapping[option]}</option>
+          )}
         </For>
       </select>
 
       <Switch>
         <Match when={props.frequencySelected === Frequency.HOURLY}>
-          <RepeatHourly value={props.repeatDetails} onChange={props.setRepeatDetails} />
+          <RepeatHourly
+            value={props.repeatDetails}
+            onChange={props.setRepeatDetails}
+          />
         </Match>
         <Match when={props.frequencySelected === Frequency.DAILY}>
-          <RepeatDaily value={props.repeatDetails} onChange={props.setRepeatDetails} />
+          <RepeatDaily
+            value={props.repeatDetails}
+            onChange={props.setRepeatDetails}
+          />
         </Match>
         <Match when={props.frequencySelected === Frequency.WEEKLY}>
-          <RepeatWeekly value={props.repeatDetails} onChange={props.setRepeatDetails} />
+          <RepeatWeekly
+            value={props.repeatDetails}
+            onChange={props.setRepeatDetails}
+          />
         </Match>
         <Match when={props.frequencySelected === Frequency.MONTHLY}>
           <RepeatMonthly

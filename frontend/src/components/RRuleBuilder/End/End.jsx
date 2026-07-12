@@ -53,10 +53,12 @@ export default function End(props) {
             type="date"
             value={toDateInputValue(props.endDetails.endDate)}
             min={toDateInputValue(props.minEndDate)}
-            onInput={(e) => props.setEndDetails({
-              endingType: EndType.ON,
-              endDate: fromDateInputValue(e.target.value),
-            })}
+            onInput={(e) =>
+              props.setEndDetails({
+                endingType: EndType.ON,
+                endDate: fromDateInputValue(e.target.value),
+              })
+            }
             class="rounded-md border border-[var(--color-border-soft)] bg-[var(--color-bg)] px-2 py-1 text-[var(--color-text)]"
           />
         </label>

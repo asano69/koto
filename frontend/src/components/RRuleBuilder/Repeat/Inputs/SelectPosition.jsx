@@ -4,18 +4,30 @@
 // RepeatWeekly) since <select multiple> has poor usability.
 
 import { For } from "solid-js";
-import { OnThe, onTheTextMapping, addOrRemoveFromArray, safeParseInt } from "../../../../lib/rrule";
+import {
+  OnThe,
+  onTheTextMapping,
+  addOrRemoveFromArray,
+  safeParseInt,
+} from "../../../../lib/rrule";
 
 const positions = Object.values(OnThe).map((v) => safeParseInt(v));
 
 export default function SelectPosition(props) {
   const toggle = (pos) => {
     if (props.disabled) return;
-    props.onChange({ ...props.value, bySetPos: addOrRemoveFromArray(props.value.bySetPos, pos) });
+    props.onChange({
+      ...props.value,
+      bySetPos: addOrRemoveFromArray(props.value.bySetPos, pos),
+    });
   };
 
   return (
-    <div role="group" aria-label="Select Position" class="flex flex-col gap-1 text-sm">
+    <div
+      role="group"
+      aria-label="Select Position"
+      class="flex flex-col gap-1 text-sm"
+    >
       <span>Select Position</span>
       <div class="flex flex-wrap gap-1">
         <For each={positions}>

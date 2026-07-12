@@ -59,7 +59,9 @@ export default function RRuleBuilder(props) {
           <input
             type="date"
             value={toDateInputValue(store.startDate())}
-            onInput={(e) => store.setStartDate(fromDateInputValue(e.target.value))}
+            onInput={(e) =>
+              store.setStartDate(fromDateInputValue(e.target.value))
+            }
             class="rounded-md border border-[var(--color-border-soft)] bg-[var(--color-bg)] px-2 py-1 text-[var(--color-text)]"
           />
         </label>

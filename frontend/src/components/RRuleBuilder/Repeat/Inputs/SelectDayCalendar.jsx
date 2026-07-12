@@ -4,7 +4,8 @@ import { For } from "solid-js";
 import { safeParseInt } from "../../../../lib/rrule";
 
 export default function SelectDayCalendar(props) {
-  const days = () => Array.from({ length: props.maxDaysInMonth }, (_, i) => i + 1);
+  const days = () =>
+    Array.from({ length: props.maxDaysInMonth }, (_, i) => i + 1);
 
   const handleChange = (e) => {
     const parsed = safeParseInt(e.target.value);
@@ -22,10 +23,10 @@ export default function SelectDayCalendar(props) {
         onChange={handleChange}
         class="rounded-md border border-[var(--color-border-soft)] bg-[var(--color-bg)] px-2 py-1 text-[var(--color-text)] disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <option value="" disabled>Select Day</option>
-        <For each={days()}>
-          {(day) => <option value={day}>{day}</option>}
-        </For>
+        <option value="" disabled>
+          Select Day
+        </option>
+        <For each={days()}>{(day) => <option value={day}>{day}</option>}</For>
       </select>
     </label>
   );
