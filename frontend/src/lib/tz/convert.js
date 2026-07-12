@@ -1,13 +1,19 @@
-// frontend/src/lib/tz.js
-// Single place where wall-clock <-> UTC conversion happens for a given
-// IANA timezone. The server never touches timezones (see CLAUDE.md): it
-// only stores/returns whatever string this module produces.
+// Pure UTC <-> naive wall-clock conversion for a given IANA timezone.
+// No PocketBase dependency here on purpose, so this stays trivially
+// unit-testable (see convert.test.js). The timezone itself is resolved
+// elsewhere (see settings.js).
 
-// Converts a canonical UTC dtstart ("YYYYMMDDTHHMMSSZ") to a naive
+const UTC_RE = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/;
+const NAIVE_RE = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})$/;
+
+// Converts a canonical UTC dtstart ("YYYYMMDDTHHMMSSZ") into a naive
 // "YYYYMMDDTHHMMSS" wall-clock string in tzId, for display/editing.
+// Non-matching input (empty, or an already-naive legacy record) is
+// returned unchanged.
 export function utcToLocal(utcStr, tzId) {
-  const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/.exec(utcStr ?? "");
-  if (!m) return utcStr ?? ""; // legacy naive record or empty
+  const m = UTC_RE.exec(utcStr ?? "");
+  if (!m) return utcStr ?? "";
+
   const [, y, mo, d, h, mi, s] = m;
   const instant = new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi, +s));
   const p = partsInTz(instant, tzId);
@@ -17,18 +23,18 @@ export function utcToLocal(utcStr, tzId) {
 // Converts a naive "YYYYMMDDTHHMMSS" wall-clock string (interpreted in
 // tzId) into a canonical UTC dtstart string, for saving.
 export function localToUtc(naiveStr, tzId) {
-  const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})$/.exec(
-    naiveStr ?? "",
-  );
+  const m = NAIVE_RE.exec(naiveStr ?? "");
   if (!m) return naiveStr ?? "";
-  const [, y, mo, d, h, mi, s] = m;
-  const guess = Date.UTC(+y, +mo - 1, +d, +h, +mi, +s);
 
-  // The offset between "wall time in tzId" and UTC isn't known in
-  // advance (DST), so find it by asking what wall time `guess` would
-  // show in tzId, then correct by the difference. One correction is
-  // enough except right at a DST transition, so iterate to be safe.
-  let instant = new Date(guess);
+  const [, y, mo, d, h, mi, s] = m;
+  const wanted = Date.UTC(+y, +mo - 1, +d, +h, +mi, +s);
+
+  // JS has no "make an instant from wall-clock time in an arbitrary
+  // timezone" primitive, so this guesses the instant, checks what wall
+  // time it actually shows in tzId, and corrects by the difference.
+  // One correction is enough except right at a DST transition, so it
+  // iterates a couple of times to converge.
+  let instant = new Date(wanted);
   for (let i = 0; i < 2; i++) {
     const p = partsInTz(instant, tzId);
     const shown = Date.UTC(
@@ -39,7 +45,7 @@ export function localToUtc(naiveStr, tzId) {
       +p.minute,
       +p.second,
     );
-    instant = new Date(instant.getTime() + (guess - shown));
+    instant = new Date(instant.getTime() + (wanted - shown));
   }
   return formatUtc(instant);
 }
@@ -57,7 +63,7 @@ function partsInTz(date, tzId) {
       second: "2-digit",
     })
       .formatToParts(date)
-      .map((p) => [p.type, p.value]),
+      .map((part) => [part.type, part.value]),
   );
 }
 
