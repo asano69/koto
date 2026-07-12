@@ -4,13 +4,15 @@ import { createSignal, onCleanup, Show } from "solid-js";
 
 // Order matters: tokens.css defines the CSS custom properties every other
 // stylesheet consumes via var().
+import pb from "./lib/pb";
 import "./style.css";
 import Home from "./routes/Home";
 import Settings from "./routes/Settings";
 import Login from "./routes/Login";
 import RRuleTest from "./routes/RRuleTest";
 import NewEntry from "./routes/NewEntry";
-import pb from "./lib/pb";
+import EditEntry from "./routes/EditEntry";
+
 
 // AuthGate blocks the whole app behind Login until a valid superuser
 // session exists, tracking pb.authStore so it reacts immediately to
@@ -37,6 +39,7 @@ render(
         <Route path="/settings" component={Settings} />
         <Route path="/rrule-test" component={RRuleTest} />
         <Route path="/new" component={NewEntry} />
+        <Route path="/edit/:id" component={EditEntry} />
       </Router>
     </AuthGate>
   ),

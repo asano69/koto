@@ -1,4 +1,5 @@
 import { createSignal, onMount, For } from "solid-js";
+import { A } from "@solidjs/router";
 import NavBar from "../components/NavBar";
 import pb from "../lib/pb";
 
@@ -48,30 +49,47 @@ function NoteItem(props) {
 
   return (
     <li
-      draggable
-      onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      class="flex cursor-grab flex-col gap-2 rounded-md border border-[var(--color-border-soft)] bg-[var(--color-field)] p-4 shadow-[0_1px_3px_0_var(--color-shadow)]"
+      class="flex items-start gap-3 rounded-md border border-[var(--color-border-soft)] bg-[var(--color-field)] p-4 shadow-[0_1px_3px_0_var(--color-shadow)]"
     >
-      <div>
-        <h2 class="font-serif text-xl">{props.note.label}</h2>
-        {props.note.description && (
-          <p class="text-sm text-[var(--color-border-soft)]">
-            {props.note.description}
-          </p>
-        )}
+      <div
+        draggable
+        onDragStart={handleDragStart}
+        title="Drag to reorder"
+        aria-label="Drag to reorder"
+        class="mt-1 cursor-grab select-none text-lg leading-none text-[var(--color-border-soft)]"
+      >
+        ⋮⋮
       </div>
-      <div class="flex gap-2">
-        <button type="button" class="btn" onClick={() => props.onShift(-1)}>
-          -1 day
-        </button>
-        <button type="button" class="btn" onClick={() => props.onShift(0)}>
-          Today
-        </button>
-        <button type="button" class="btn" onClick={() => props.onShift(1)}>
-          +1 day
-        </button>
+
+      <div class="flex flex-1 flex-col gap-2">
+        <div>
+          <h2 class="font-serif text-xl">{props.note.label}</h2>
+          {props.note.description && (
+            <p class="text-sm text-[var(--color-border-soft)]">
+              {props.note.description}
+            </p>
+          )}
+          <p class="mt-1 break-all font-mono text-xs text-[var(--color-border-soft)]">
+            {props.note.rrule} · DTSTART:{props.note.dtstart}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn" onClick={() => props.onShift(-1)}>
+            -1 day
+          </button>
+          <button type="button" class="btn" onClick={() => props.onShift(0)}>
+            Today
+          </button>
+          <button type="button" class="btn" onClick={() => props.onShift(1)}>
+            +1 day
+          </button>
+          <A href={`/edit/${props.note.id}`} class="btn">
+            Edit
+          </A>
+        </div>
       </div>
     </li>
   );
