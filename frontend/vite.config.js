@@ -20,4 +20,11 @@ export default defineConfig({
     outDir: "../internal/assets/dist",
     emptyOutDir: true,
   },
+
+  test: {
+    // Stage 4 is pure-function tests only (no component/DOM tests yet),
+    // so a plain node environment is enough — no jsdom needed.
+    environment: "node",
+    include: ["src/**/*.test.js"],
+  },
 });
