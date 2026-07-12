@@ -48,6 +48,8 @@ notifications
 - [x] CLIで、github.com/teambition/rrule-go のライブラリの振る舞いを実験するプログラムを書く。
 - [x] react-rrule-builder-ts をSolid.JS用に移植する。
 - [ ] cel-expr/cel-go の検討
+- [ ] note画面では、rruleビルダーとrrule式を双方向バインドして、どちらを編集してもよいようにする。ただしRRULE式が手動で編集されている場合はそちらを尊重するようにする。
+
 
 ## Recurrence Rule
 
