@@ -1,4 +1,4 @@
-import { createSignal, createResource, onCleanup, onMount, For, Show } from "solid-js";
+import { createSignal, createMemo, onMount, onCleanup, createResource, For, Show } from "solid-js";
 import { A } from "@solidjs/router";
 import {
   DragDropProvider,
@@ -74,26 +74,25 @@ function formatRemaining(utcStr, referenceMs) {
 
 
 function NoteItem(props) {
-  // The whole item is the drag source (not just the ⋮⋮ icon): solid-dnd's
-  // handle-only pattern relies on spreading dragActivators onto a
-  // sub-element, which is broken on Solid >=1.6 (solidjs/solid#1328).
-  // Making the whole row draggable sidesteps that bug. The pointer sensor
-  // still requires a movement threshold before a drag starts, so clicking
-  // the Edit link or the day-shift buttons still works normally.
   const sortable = createSortable(props.note.id);
 
-  // Drives the countdown display; ticks once a minute so "Xd Yh Zm" stays
-  // current without needing a full note reload.
+  // Drives both the "Next:" line and the countdown; ticks once a minute
+  // so neither freezes without a full note reload.
   const [now, setNow] = createSignal(Date.now());
   onMount(() => {
     const intervalId = setInterval(() => setNow(Date.now()), 60000);
     onCleanup(() => clearInterval(intervalId));
   });
 
-  const nextUtc = () =>
-    nextOccurrenceUtcString(props.note.dtstart, props.note.rrule);
-  const remaining = () => formatRemaining(nextUtc(), now());
+  // createMemo makes the now() dependency explicit, so recomputation is
+  // guaranteed regardless of how the JSX below happens to be compiled.
+  const nextUtc = createMemo(() => {
+    now();
+    return nextOccurrenceUtcString(props.note.dtstart, props.note.rrule);
+  });
+  const remaining = createMemo(() => formatRemaining(nextUtc(), now()));
 
+ 
   return (
     <li
       use:sortable
