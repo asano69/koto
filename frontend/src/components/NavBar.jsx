@@ -10,19 +10,24 @@ export default function NavBar(props) {
 
   const handleLogout = () => pb.authStore.clear();
 
-  onMount(async () => {
-    const resolvedTz = await loadTimezone();
-    setTz(resolvedTz);
-    setClock(formatNowInTz(resolvedTz));
+onMount(() => {
+    let intervalId;
 
-    // A minute is plenty of precision for a clock display.
-    const intervalId = setInterval(() => {
+    loadTimezone().then((resolvedTz) => {
+      setTz(resolvedTz);
       setClock(formatNowInTz(resolvedTz));
-    }, 60000);
+
+      // Ticks every second now that seconds are shown (debugging aid).
+      intervalId = setInterval(() => {
+        setClock(formatNowInTz(resolvedTz));
+      }, 1000);
+    });
+
     onCleanup(() => clearInterval(intervalId));
   });
 
-  return (
+
+return (
     <div class="mb-10 flex w-full flex-wrap items-center justify-between gap-y-3">
       <div class="flex flex-wrap items-center gap-4">
         <A
